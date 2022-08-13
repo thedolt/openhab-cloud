@@ -29,6 +29,20 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       - name: build ${{github.repository}}
         run: |
-          docker buildx build --push \
-          --tag thedolt/${{github.repository}}:latest \
-          --platform linux/amd64,linux/arm/v7,linux/arm64/v8 .
+          GIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
+
+          # Change all uppercase to lowercase
+          IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          docker buildx build . --push \
+            --tag thedolt/$IMAGE_NAME:$GIT_HASH \
+            --tag thedolt/$IMAGE_NAME:$VERSION \
+            --platform linux/amd64,linux/arm/v7,linux/arm64/v8
