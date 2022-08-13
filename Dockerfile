@@ -14,6 +14,8 @@ WORKDIR /opt/openhabcloud
 
 # Install node modules
 COPY package.json package-lock.json ./
+RUN apk update
+RUN apk search -v -d python
 RUN apk add --no-cache --virtual .build-deps build-base python
 RUN npm install
 RUN npm rebuild bcrypt --build-from-source
