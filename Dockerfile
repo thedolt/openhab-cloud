@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 RUN apk add --no-cache tzdata gettext
 
@@ -14,9 +14,10 @@ WORKDIR /opt/openhabcloud
 
 # Install node modules
 COPY package.json package-lock.json ./
-RUN apk add --no-cache --virtual .build-deps build-base python && \
-    npm install && npm rebuild bcrypt --build-from-source && \
-    apk del .build-deps
+RUN apk add --no-cache --virtual .build-deps build-base python
+RUN npm install
+RUN npm rebuild bcrypt --build-from-source
+RUN apk del .build-deps
 
 # Prepare source tree
 RUN chown openhabcloud:openhabcloud .
