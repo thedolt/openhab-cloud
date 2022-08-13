@@ -43,6 +43,6 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
           docker buildx build . --push \
-            --tag thedolt/$IMAGE_NAME:$GIT_HASH \
-            --tag thedolt/$IMAGE_NAME:$VERSION \
+            --tag thedolt/openhab-cloud:$GIT_HASH \
+            --tag thedolt/openhab-cloud:latest \
             --platform linux/amd64,linux/arm/v7,linux/arm64/v8
