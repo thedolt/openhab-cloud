@@ -18,7 +18,6 @@ RUN apk update
 ENV PYTHONUNBUFFERED=1
 RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
 RUN apk add --no-cache --virtual .build-deps build-base
-RUN npm list -a
 RUN npm install
 RUN npm rebuild bcrypt --build-from-source
 RUN apk del .build-deps
