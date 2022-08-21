@@ -2,9 +2,7 @@ FROM node:8.15.0-stretch
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install tzdata && \
-    apt-get install build-essential -y && \
-    apt-get install python -y 
+    apt-get install tzdata build-essential python -y
 
 #FROM node:16-alpine
 
@@ -19,7 +17,8 @@ RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime && \
     echo "${TZ}" > /etc/timezone
 
 RUN mkdir -p /opt/openhabcloud
-COPY ./package.json ./config.json /opt/openhabcloud/
+COPY ./package.json /opt/openhabcloud/
+COPY ./deployment/docker-compose/config.json.template /opt/openhabcloud/config.json
 RUN mkdir /data
 RUN ln -s /opt/openhabcloud/package.json /data
 WORKDIR /data
