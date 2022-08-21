@@ -18,7 +18,8 @@ RUN ln -s /usr/share/zoneinfo/${TZ} /etc/localtime && \
 
 RUN mkdir -p /opt/openhabcloud
 COPY ./package.json /opt/openhabcloud/
-COPY deployment/docker-compose/config.json.template /opt/openhabcloud/config.json
+#COPY deployment/docker-compose/config.json.template /opt/openhabcloud/config.json
+RUN ls ./deployment
 RUN mkdir /data
 RUN ln -s /opt/openhabcloud/package.json /data
 WORKDIR /data
